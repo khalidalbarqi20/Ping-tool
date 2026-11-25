@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Gaming Server Monitor v14.1: metadata-only backend; never fabricates player ping."""
+"""Gaming Server Monitor v14.2: metadata-only backend; never fabricates player ping."""
 import json
 import os
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
@@ -30,7 +30,7 @@ def public_config():
             "status": game.get("status"),
             "note": game.get("note"),
         })
-    return {"version": "14.1", "measurement": "disabled_until_valid_client_probe_exists", "games": games}
+    return {"version": "14.2", "measurement": "general_edge_probe_only", "games": games}
 
 
 class Handler(BaseHTTPRequestHandler):
@@ -55,14 +55,14 @@ class Handler(BaseHTTPRequestHandler):
         # Route using the URL path only, not the raw request target.
         request_path = urlsplit(self.path).path or "/"
         if request_path in ("/health", "/api/health"):
-            self.send_bytes(200, json.dumps({"ok": True, "service": "ping-tool", "version": "14.1"}).encode(), "application/json; charset=utf-8")
+            self.send_bytes(200, json.dumps({"ok": True, "service": "ping-tool", "version": "14.2"}).encode(), "application/json; charset=utf-8")
             return
         if request_path == "/api/config":
             self.send_bytes(200, json.dumps(public_config(), ensure_ascii=False).encode(), "application/json; charset=utf-8")
             return
         if request_path == "/api/stats":
             payload = {
-                "version": "14.1",
+                "version": "14.2",
                 "measurement": "not_available",
                 "message": "لا توجد نقطة اختبار تدعم قياساً مباشراً من المتصفح لهذه الوجهة.",
                 "items": [],
@@ -78,10 +78,10 @@ class Handler(BaseHTTPRequestHandler):
         self.send_bytes(404, json.dumps({
             "error": "not_found",
             "path": request_path,
-            "version": "14.1"
+            "version": "14.2"
         }).encode(), "application/json; charset=utf-8")
 
 
 if __name__ == "__main__":
-    print(f"Gaming Server Monitor v14.1 listening on 0.0.0.0:{PORT}")
+    print(f"Gaming Server Monitor v14.2 listening on 0.0.0.0:{PORT}")
     ThreadingHTTPServer(("0.0.0.0", PORT), Handler).serve_forever()
