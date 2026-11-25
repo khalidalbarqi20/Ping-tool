@@ -1,0 +1,56 @@
+<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1"><title>Gaming Server Monitor</title>
+<style>*{box-sizing:border-box}body{margin:0;padding:14px;background:#000;color:#fff;font-family:sans-serif}
+.h{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}.live{background:#053b1a;color:#22c55e;padding:4px 12px;border-radius:14px;font-size:13px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.t{aspect-ratio:1;border:1px solid #2a2a2a;border-radius:22px;background:#0b0b0b;padding:12px;display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden}
+.t.best{border-color:#22c55e}.plus{align-items:center;justify-content:center;border:2px dashed #333;background:none;font-size:56px;color:#666;cursor:pointer}
+.x{position:absolute;top:6px;left:8px;color:#666;font-size:18px;background:none;border:0;padding:4px}
+.bars{display:flex;align-items:flex-end;gap:3px;height:20px}.bars i{display:block;width:7px;background:#2a5a45;border-radius:2px}.bars i:last-child{background:#22c55e}.row{display:flex;justify-content:space-between;align-items:center}.ms{font-size:30px;font-weight:700;direction:ltr;text-align:right}.sm{font-size:11px;color:#999;line-height:1.6}.nm{font-weight:700;font-size:15px}
+.tag{font-size:10px;background:#3a2a05;color:#f59e0b;padding:1px 6px;border-radius:8px}.bd{font-size:10px;background:#053b1a;color:#22c55e;padding:1px 6px;border-radius:8px}
+#sheet{position:fixed;inset:0;background:#000;overflow:auto;padding:14px;z-index:5}
+.rw,.sb,.cl,.fb{width:100%;padding:12px;border-radius:12px;border:1px solid #333;background:#111;color:#fff;font-size:15px;margin-top:8px;display:flex;justify-content:space-between}
+.rw:disabled{opacity:.4}.cl{justify-content:center}.sb{justify-content:center;border-color:#22c55e;color:#22c55e}.fb{justify-content:center}.dl{background:none;border:0;color:#a33;font-size:18px;padding:0 10px}input{width:100%;padding:12px;margin-top:8px;border-radius:12px;border:1px solid #333;background:#111;color:#fff;font-size:15px}.gt{margin-top:18px;font-weight:700}</style></head><body>
+<div class="h"><b style="font-size:20px">Gaming Server Monitor <small style="color:#777">v12</small></b><span class="live">LIVE</span></div>
+<div style="margin:0 0 14px;padding:10px 12px;border:1px solid #66501d;border-radius:10px;background:#241d0e;color:#e8d49e;font-size:12px;line-height:1.7">
+<b>تنبيه دقة القياس:</b> هذه النسخة تقيس من خادم الاستضافة إلى الوجهات، وليس من جوالك أو جهازك. لذلك لا تعتبر الأرقام بنق اتصالك داخل اللعبة. قياس جهازك مباشرة يحتاج نقاط اختبار إقليمية واتصالاً مباشراً مدعوماً من المتصفح.
+</div>
+<div class="grid" id="grid"></div>
+<div style="margin-top:16px"><button class="fb" onclick="snap()">حفظ قياس (Wi-Fi / 5G)</button><button class="fb" onclick="snaps()">المحفوظات</button><div id="sn" class="sm"></div></div>
+<div id="sheet" hidden></div>
+<script>
+const j=async u=>(await fetch(u)).json(),f=(x,d=0)=>x==null?'—':x.toFixed(d),post=(u,b)=>fetch(u,{method:'POST',body:JSON.stringify(b||{})});
+const L={Online:['مستقر','#22c55e'],Unstable:['غير مستقر','#f59e0b'],Offline:['منقطع','#ef4444'],'No Data':['جاري القياس…','#777']};
+let cfg,D={items:[],scan:[],best:[]},was=false;
+async function init(){cfg=await j('/api/config');let a=[];try{a=JSON.parse(localStorage.getItem('rs')||'[]')}catch(e){}
+for(const r of a)await post('/api/add',{region:r});tick();setInterval(tick,1500)}
+async function tick(){D=await j('/api/stats');try{localStorage.setItem('rs',JSON.stringify(D.items.map(i=>i.region)))}catch(e){}
+render();if(!document.getElementById('sheet').hidden&&(D.scanning||was))sheet();was=D.scanning}
+function render(){document.getElementById('grid').innerHTML=D.items.map(i=>{const s=i.stats,[t,c]=L[s.state]||L['No Data'],b=D.best.includes(i.region);
+const mx=Math.max(...i.mins,1),mn=i.mins.length?i.mins[i.mins.length-1]:null;
+return '<div class="t'+(b?' best':'')+'"><button class="x" onclick="rm(\''+i.region+'\')">✕</button>'+
+'<div><div class="sm">'+i.game+(i.approx?' <span class="tag">تقريبي TCP</span>':(s.method=='measured_tcp'?' <span class="tag">TCP</span>':''))+(b?' <span class="bd">الأفضل</span>':'')+'</div><div class="nm">'+i.region+'</div></div>'+
+'<div class="row"><div class="ms" style="color:'+c+'">'+(s.now!=null?Math.round(s.now)+' ms':'—')+'</div><span class="sm" style="color:'+c+'">'+t+'</span></div>'+
+'<div class="row"><div class="bars">'+i.mins.map(v=>'<i style="height:'+Math.max(3,Math.round(v/mx*20))+'px"></i>').join('')+'</div><span class="sm">متوسط الدقيقة '+f(mn)+'</span></div>'+
+'<div class="sm">Avg '+f(s.avg)+' · Jitter '+f(s.jitter,1)+' · فقد '+(s.loss!=null?f(s.loss,1)+'%':'—')+'<br>Min '+f(s.min)+' · Max '+f(s.max)+'</div></div>'}).join('')+
+(D.items.length<6?'<div class="t plus" onclick="openS()">+</div>':'')}
+function openS(){document.getElementById('sheet').hidden=false;sheet()}
+function closeS(){document.getElementById('sheet').hidden=true}
+function sheet(){const sc={};D.scan.forEach(x=>sc[x.region]=x.avg);const have=D.items.map(i=>i.region);
+let h='<button class="cl" onclick="closeS()">إغلاق ✕</button><h3>إضافة سيرفر</h3>';
+for(const g of cfg.games){h+='<div class="gt">'+g.name+'</div>';
+if(!g.regions.length&&g.id!='custom'){h+='<div class="sm">No Data — لا عنوان قياس موثق'+(g.status?' · <a style="color:#999" href="'+g.status+'">حالة السيرفر</a>':'')+'</div>';continue}
+if(g.id!='custom'&&g.regions.some(r=>!r.approx))h+='<button class="sb" onclick="post(\'/api/scan\')">'+(D.scanning?'جاري الفحص '+D.scanned+'/'+D.total:'فحص المناطق (دقيقة إلى دقيقتين)')+'</button>';
+if(g.note)h+='<div class="sm" style="margin-top:6px">'+g.note+'</div>';
+const rs=[...g.regions].sort((a,b)=>(sc[a.name]??1e9)-(sc[b.name]??1e9));
+h+=rs.map(r=>(g.id=='custom'?'<div style="display:flex;align-items:center">':'')+'<button class="rw" '+(have.includes(r.name)?'disabled':'onclick="add(\''+r.name+'\')"')+'><span>'+r.name+'</span><span>'+(have.includes(r.name)?'✓':sc[r.name]!=null?Math.round(sc[r.name])+' ms':'')+'</span></button>'+(g.id=='custom'?'<button class="dl" onclick="delC(\''+r.name+'\')">🗑</button></div>':'')).join('')}
+h+='<div class="gt">إضافة عنوان مخصص</div><div class="sm">ضع IP أو اسم سيرفر اللعبة الفعلي. اترك المنفذ فارغاً لقياس ICMP، أو اكتب منفذ TCP.</div><input id="cn" placeholder="الاسم (مثال: PUBG أوروبا)"><input id="ch" placeholder="IP أو اسم السيرفر" dir="ltr"><input id="cp" placeholder="منفذ TCP (اختياري)" inputmode="numeric" dir="ltr"><button class="sb" onclick="addC()">حفظ العنوان</button>'
+document.getElementById('sheet').innerHTML=h}
+async function addC(){const n=document.getElementById('cn').value,hh=document.getElementById('ch').value,p=document.getElementById('cp').value;
+if(!n||!hh){alert('اكتب الاسم والعنوان');return}await post('/api/custom',{name:n,host:hh,tcp:p});cfg=await j('/api/config');sheet()}
+async function delC(r){await post('/api/custom_del',{region:r});cfg=await j('/api/config');tick();sheet()}
+async function add(r){await post('/api/add',{region:r});closeS();tick()}
+async function rm(r){await post('/api/remove',{region:r});tick()}
+async function snap(){const l=prompt('اسم القياس (مثال: Wi-Fi البيت)');if(l){await post('/api/snap',{label:l});alert('انحفظ')}}
+async function snaps(){const a=await j('/api/snaps');document.getElementById('sn').innerHTML=a.map(x=>'<div style="margin-top:8px"><b>'+x.label+'</b> '+x.time+'<br>'+(x.items||[]).map(i=>i.region+' '+(i.stats.avg?Math.round(i.stats.avg)+'ms':'—')).join(' · ')+'</div>').join('')||'لا محفوظات'}
+init()</script></body></html>
