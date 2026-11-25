@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Gaming Server Monitor v14.2: metadata-only backend; never fabricates player ping."""
+"""Gaming Server Monitor v15.0: regional HTTP estimates; never fabricates player ping."""
 import json
 import os
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
@@ -8,6 +8,7 @@ from urllib.parse import urlsplit
 
 BASE = Path(__file__).resolve().parent
 CONFIG = json.loads((BASE / "games.json").read_text(encoding="utf-8"))
+REGIONS = json.loads((BASE / "regions.json").read_text(encoding="utf-8"))
 PORT = int(os.environ.get("PORT", "8765"))
 
 
@@ -30,7 +31,7 @@ def public_config():
             "status": game.get("status"),
             "note": game.get("note"),
         })
-    return {"version": "14.2", "measurement": "general_edge_probe_only", "games": games}
+    return {"version": "15.0", "measurement": "regional_http_estimates", "regions": REGIONS["regions"], "excluded_region_codes": ["il-central-1"], "games": games}
 
 
 class Handler(BaseHTTPRequestHandler):
@@ -55,14 +56,17 @@ class Handler(BaseHTTPRequestHandler):
         # Route using the URL path only, not the raw request target.
         request_path = urlsplit(self.path).path or "/"
         if request_path in ("/health", "/api/health"):
-            self.send_bytes(200, json.dumps({"ok": True, "service": "ping-tool", "version": "14.2"}).encode(), "application/json; charset=utf-8")
+            self.send_bytes(200, json.dumps({"ok": True, "service": "ping-tool", "version": "15.0"}).encode(), "application/json; charset=utf-8")
             return
         if request_path == "/api/config":
             self.send_bytes(200, json.dumps(public_config(), ensure_ascii=False).encode(), "application/json; charset=utf-8")
             return
+        if request_path == "/api/regions":
+            self.send_bytes(200, json.dumps(REGIONS, ensure_ascii=False).encode(), "application/json; charset=utf-8")
+            return
         if request_path == "/api/stats":
             payload = {
-                "version": "14.2",
+                "version": "15.0",
                 "measurement": "not_available",
                 "message": "لا توجد نقطة اختبار تدعم قياساً مباشراً من المتصفح لهذه الوجهة.",
                 "items": [],
@@ -78,10 +82,10 @@ class Handler(BaseHTTPRequestHandler):
         self.send_bytes(404, json.dumps({
             "error": "not_found",
             "path": request_path,
-            "version": "14.2"
+            "version": "15.0"
         }).encode(), "application/json; charset=utf-8")
 
 
 if __name__ == "__main__":
-    print(f"Gaming Server Monitor v14.2 listening on 0.0.0.0:{PORT}")
+    print(f"Gaming Server Monitor v15.0 listening on 0.0.0.0:{PORT}")
     ThreadingHTTPServer(("0.0.0.0", PORT), Handler).serve_forever()

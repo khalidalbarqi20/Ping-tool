@@ -1,0 +1,105 @@
+{
+  "version": "15.0",
+  "method": "browser-fetch-no-cors",
+  "attempts_per_region": 3,
+  "max_concurrency": 6,
+  "timeout_ms": 2500,
+  "regions": [
+    {
+      "id": "me-south-1",
+      "name": "البحرين",
+      "flag": "🇧🇭",
+      "group": "الشرق الأوسط"
+    },
+    {
+      "id": "me-central-1",
+      "name": "الإمارات",
+      "flag": "🇦🇪",
+      "group": "الشرق الأوسط"
+    },
+    {
+      "id": "ap-south-1",
+      "name": "مومباي – الهند",
+      "flag": "🇮🇳",
+      "group": "آسيا"
+    },
+    {
+      "id": "ap-south-2",
+      "name": "حيدر آباد – الهند",
+      "flag": "🇮🇳",
+      "group": "آسيا"
+    },
+    {
+      "id": "ap-southeast-1",
+      "name": "سنغافورة",
+      "flag": "🇸🇬",
+      "group": "آسيا"
+    },
+    {
+      "id": "ap-southeast-2",
+      "name": "سيدني – أستراليا",
+      "flag": "🇦🇺",
+      "group": "آسيا والمحيط الهادئ"
+    },
+    {
+      "id": "ap-southeast-3",
+      "name": "جاكرتا – إندونيسيا",
+      "flag": "🇮🇩",
+      "group": "آسيا"
+    },
+    {
+      "id": "ap-southeast-4",
+      "name": "ملبورن – أستراليا",
+      "flag": "🇦🇺",
+      "group": "آسيا والمحيط الهادئ"
+    },
+    {
+      "id": "ap-southeast-5",
+      "name": "ماليزيا",
+      "flag": "🇲🇾",
+      "group": "آسيا"
+    },
+    {
+      "id": "ap-southeast-6",
+      "name": "نيوزيلندا",
+      "flag": "🇳🇿",
+      "group": "آسيا والمحيط الهادئ"
+    },
+    {
+      "id": "ap-southeast-7",
+      "name": "تايلاند",
+      "flag": "🇹🇭",
+      "group": "آسيا"
+    },
+    {
+      "id": "ap-northeast-1",
+      "name": "طوكيو – اليابان",
+      "flag": "🇯🇵",
+      "group": "آسيا"
+    },
+    {
+      "id": "ap-northeast-2",
+      "name": "سيول – كوريا الجنوبية",
+      "flag": "🇰🇷",
+      "group": "آسيا"
+    },
+    {
+      "id": "ap-northeast-3",
+      "name": "أوساكا – اليابان",
+      "flag": "🇯🇵",
+      "group": "آسيا"
+    },
+    {
+      "id": "ap-east-1",
+      "name": "هونغ كونغ",
+      "flag": "🇭🇰",
+      "group": "آسيا"
+    },
+    {
+      "id": "ap-east-2",
+      "name": "تايبيه – تايوان",
+      "flag": "🇹🇼",
+      "group": "آسيا"
+    }
+  ]
+}

@@ -1,8 +1,8 @@
-# Sources and measurement semantics
+# Sources and measurement boundaries
 
-- Epic Games regional ping endpoint reference: https://www.epicgames.com/help/c-34254770/c-37371353/a22355516
-- Cloudflare WebSockets support: https://developers.cloudflare.com/network/websockets/
-- Cloudflare Workers WebSocket runtime: https://developers.cloudflare.com/workers/runtime-apis/websockets/
-- Cloudflare Workers limits: https://developers.cloudflare.com/workers/platform/limits/
+- AWS regional endpoint list: https://docs.aws.amazon.com/general/latest/gr/rande.html
+- AWS region reference and opt-in status: https://docs.aws.amazon.com/accounts/latest/reference/manage-acct-regions.html
+- Instant Speed Test methodology: https://instantspeedtest.net/ar/how-we-test/
+- Instant Speed Test PUBG Mobile method example: https://instantspeedtest.net/ar/gamer-hub/pubg-mobile-ping-test/
 
-The new RTT value is measured by the browser to the configured Cloudflare Worker WebSocket endpoint. It is not a game-server measurement. Region-specific game ping remains unavailable until a genuine browser-reachable probe is deployed in that region or the game publisher exposes a suitable measurement endpoint.
+The browser measures HTTP fetch timing to regional AWS DynamoDB API endpoints. This is not the game match server and does not measure UDP packet loss. Browser no-cors responses are opaque; status codes are not visible.
