@@ -8,15 +8,15 @@
 <div class="alert"><b>تمييز ضروري:</b> الرقم في بطاقة الاختبار يقيس RTT بين جهازك وأقرب نقطة Cloudflare Edge، وليس Ping خادم مباراة. قياس Cloudflare منفصل عن بنق المباراة. لا نستخدمه لتصنيف PUBG أو Fortnite.</div>
 <section class="probe"><div class="probe-head"><h2>قياس اتصال جهازك الحالي</h2><span class="scope">أقرب Cloudflare Edge — عالمي</span></div><p>هذه نقطة اختبار عامة وليست اختيار منطقة لعبة. القياس يستخدم اتصال الجهاز النشط حالياً سواء Wi-Fi أو بيانات جوال أو Ethernet.</p><div class="big" id="ping">— <small style="font-size:13px">ms</small></div><div class="metrics"><span>المتوسط: <b id="avg">—</b> ms</span><span>Jitter: <b id="jitter">—</b> ms</span><span>العينات: <b id="samples">0</b></span><span>الحالة: <b id="probeStatus">غير مهيأ</b></span></div><div class="setup"><input id="probeUrl" placeholder="wss://اسم-الخدمة.workers.dev/ws" autocomplete="url"><button class="btn" id="save">حفظ وتشغيل</button></div><p id="hint">انشر نقطة الاختبار المرفقة في مجلد probe-worker على Cloudflare Workers، ثم ضع رابطها هنا مرة واحدة.</p></section>
 <section class="region-panel" aria-labelledby="regionTitle">
- <div class="region-top"><h2 id="regionTitle">اختبار مناطق الشرق الأوسط وآسيا</h2><div class="region-actions"><button class="btn" id="startRegions">ابدأ الاختبار</button><button class="btn secondary" id="stopRegions" disabled>إيقاف</button></div></div>
- <p class="region-note">يقيس زمن استجابة HTTP من متصفحك إلى نقاط AWS DynamoDB الإقليمية. 3 محاولات لكل منطقة، وبحد أقصى 6 طلبات متزامنة ومهلة 2.5 ثانية. هذه تقديرات مسار HTTP وليست بنق خوادم الألعاب أو فقدان UDP. المناطق الإسرائيلية مستبعدة من قائمة الاختبار.</p>
- <div class="region-summary"><span>المناطق: <b>16</b></span><span>المحاولات: <b id="regionAttempts">0 / 48</b></span><span>الناجحة: <b id="regionSuccess">0</b></span><span>الفاشلة: <b id="regionFailed">0</b></span><span>الحالة: <b id="regionRunState">جاهز</b></span></div>
+ <div class="region-top"><h2 id="regionTitle">اختبار مناطق الشرق الأوسط وآسيا</h2><div class="region-actions"><button class="btn" id="startRegions">ابدأ القياس المباشر</button><button class="btn secondary" id="stopRegions" disabled>إيقاف</button></div></div>
+ <p class="region-note">قياس مباشر مستمر: تُرسل عينة جديدة كل ثانية بالتناوب بين المناطق الـ16، لذلك تتحدث قراءة كل منطقة تقريبًا كل 16 ثانية. نستخدم طلبًا واحدًا في كل مرة لتجنب الضغط على الشبكة. مهلة الطلب 2.5 ثانية. هذه استجابة HTTP وليست بنق خوادم الألعاب أو فقدان UDP. المناطق الإسرائيلية مستبعدة تمامًا.</p>
+ <div class="region-summary"><span>المناطق: <b>16</b></span><span>المحاولات: <b id="regionAttempts">0</b></span><span>الناجحة: <b id="regionSuccess">0</b></span><span>الفاشلة: <b id="regionFailed">0</b></span><span>الحالة: <b id="regionRunState">جاهز</b></span></div>
  <div class="region-table-wrap"><table class="region-table"><thead><tr><th>المنطقة</th><th>آخر استجابة</th><th>الوسيط</th><th>العينات</th><th>الحالة</th></tr></thead><tbody id="regionRows"></tbody></table></div>
 </section>
 <div class="toolbar"><h2>الألعاب — الشرق الأوسط فقط</h2><span id="summary">معاييرك المرجعية</span></div><section id="games" class="games" aria-live="polite"></section>
 <footer><b>حدود الدقة:</b><br>قياس Cloudflare Edge يوضح جودة المسار إلى نقطة Cloudflare فقط. لا نستنتج منه Ping PUBG أو Fortnite. تصنيفات PUBG (20–35 ممتاز، 36–99 متوسط، 100+ سيئ) وFortnite (60–70 ممتاز، 71–119 متوسط، 120+ سيئ) مبنية على مرجع اللعب الفعلي الذي زودنا به المستخدم، ولا تُطبّق إلا بعد توفر قياس إقليمي صالح خاص باللعبة. لا يتم عرض رقم بديل أو تخميني.</footer></main>
 <script>
-const APP_VERSION='15.0';
+const APP_VERSION='15.1';
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));let socket=null,timer=null,values=[],pending=new Map(),seq=0;
 const $=id=>document.getElementById(id);function stats(){if(!values.length)return;$('avg').textContent=Math.round(values.reduce((a,b)=>a+b,0)/values.length);const d=values.slice(1).map((v,i)=>Math.abs(v-values[i]));$('jitter').textContent=d.length?Math.round(d.reduce((a,b)=>a+b,0)/d.length):'—';$('samples').textContent=values.length;}
 function stop(){if(timer)clearInterval(timer);timer=null;if(socket){try{socket.close()}catch{}}socket=null;pending.clear();}
@@ -67,14 +67,14 @@ const REGIONS = [
  {id:'ap-east-1',name:'هونغ كونغ',flag:'🇭🇰',group:'آسيا'},
  {id:'ap-east-2',name:'تايبيه – تايوان',flag:'🇹🇼',group:'آسيا'}
 ];
-const REGIONAL_ATTEMPTS=3, REGIONAL_CONCURRENCY=6, REGIONAL_TIMEOUT=2500;
-let regionalAbort=null,regionalRunning=false;
-const regionResults=new Map(REGIONS.map(r=>[r.id,{samples:[],attempts:0,failed:0,state:'بانتظار الاختبار'}]));
+const REGIONAL_TIMEOUT=2500, LIVE_INTERVAL=1000, HISTORY_LIMIT=60;
+let regionalAbort=null,regionalRunning=false,regionalTimer=null,regionCursor=0,regionalBusy=false;
+let totalAttempts=0,totalSuccess=0,totalFailed=0;
+const regionResults=new Map(REGIONS.map(r=>[r.id,{samples:[],attempts:0,failed:0,state:'بانتظار القياس',lastAt:null}]));
 function median(a){if(!a.length)return null;const x=[...a].sort((m,n)=>m-n),k=Math.floor(x.length/2);return x.length%2?x[k]:(x[k-1]+x[k])/2;}
 function renderRegions(){
- $('regionRows').innerHTML=REGIONS.map(r=>{const x=regionResults.get(r.id),last=x.samples.length?x.samples[x.samples.length-1]:null,med=median(x.samples);const state=x.state==='مكتمل'?'ok':x.state==='فشل'?'fail':'';return `<tr><td><span class="region-name">${r.flag} ${r.name}</span><span class="region-code">${r.id}</span></td><td class="region-value">${last===null?'—':Math.round(last)+' ms'}</td><td class="region-value">${med===null?'—':Math.round(med)+' ms'}</td><td>${x.samples.length} / ${x.attempts}</td><td><span class="region-state ${state}">${x.state}</span></td></tr>`}).join('');
- const attempts=[...regionResults.values()].reduce((a,x)=>a+x.attempts,0),success=[...regionResults.values()].reduce((a,x)=>a+x.samples.length,0),failed=[...regionResults.values()].reduce((a,x)=>a+x.failed,0);
- $('regionAttempts').textContent=`${attempts} / 48`;$('regionSuccess').textContent=success;$('regionFailed').textContent=failed;
+ $('regionRows').innerHTML=REGIONS.map(r=>{const x=regionResults.get(r.id),last=x.samples.length?x.samples[x.samples.length-1]:null,med=median(x.samples);const state=x.state==='متصل'?'ok':x.state==='تعذر'?'fail':'';const age=x.lastAt?`${Math.max(0,Math.floor((Date.now()-x.lastAt)/1000))} ث`:'—';return `<tr><td><span class="region-name">${r.flag} ${r.name}</span><span class="region-code">${r.id}</span></td><td class="region-value">${last===null?'—':Math.round(last)+' ms'}</td><td class="region-value">${med===null?'—':Math.round(med)+' ms'}</td><td>${x.attempts}</td><td><span class="region-state ${state}">${x.state} · ${age}</span></td></tr>`}).join('');
+ $('regionAttempts').textContent=totalAttempts;$('regionSuccess').textContent=totalSuccess;$('regionFailed').textContent=totalFailed;
 }
 function updateRegionState(t){$('regionRunState').textContent=t;}
 async function probeRegion(region,signal){
@@ -85,21 +85,32 @@ async function probeRegion(region,signal){
  try{await fetch(url,{method:'GET',mode:'no-cors',cache:'no-store',credentials:'omit',redirect:'follow',signal:controller.signal});return performance.now()-started;}
  finally{clearTimeout(timerId);signal.removeEventListener('abort',abort);}
 }
-async function runRegionalTests(){
- if(regionalRunning)return;regionalRunning=true;regionalAbort=new AbortController();
- REGIONS.forEach(r=>regionResults.set(r.id,{samples:[],attempts:0,failed:0,state:'في الانتظار'}));
- $('startRegions').disabled=true;$('stopRegions').disabled=false;updateRegionState('جارٍ الاختبار');renderRegions();
- const queue=[];for(const r of REGIONS)for(let i=0;i<REGIONAL_ATTEMPTS;i++)queue.push({region:r,index:i});
- let cursor=0,done=0;
- const worker=async()=>{while(cursor<queue.length&&!regionalAbort.signal.aborted){const job=queue[cursor++],x=regionResults.get(job.region.id);x.attempts++;x.state='جارٍ القياس';renderRegions();try{const ms=await probeRegion(job.region,regionalAbort.signal);x.samples.push(ms);x.state=x.attempts===REGIONAL_ATTEMPTS?'مكتمل':'جارٍ القياس';}catch(e){if(regionalAbort.signal.aborted)break;x.failed++;x.state=x.attempts===REGIONAL_ATTEMPTS?'مكتمل':'جارٍ القياس';}done++;updateRegionState(`جارٍ · ${done}/48`);renderRegions();}};
- await Promise.all(Array.from({length:REGIONAL_CONCURRENCY},worker));
- if(regionalAbort.signal.aborted){for(const x of regionResults.values())if(x.state==='في الانتظار'||x.state==='جارٍ القياس')x.state='أُوقف';updateRegionState('أُوقف المستخدم الاختبار');}
- else updateRegionState('اكتمل الاختبار');
- regionalRunning=false;$('startRegions').disabled=false;$('stopRegions').disabled=true;renderRegions();
+async function liveRegionTick(){
+ if(!regionalRunning||regionalBusy||!regionalAbort||regionalAbort.signal.aborted)return;
+ regionalBusy=true;
+ const region=REGIONS[regionCursor];regionCursor=(regionCursor+1)%REGIONS.length;
+ const x=regionResults.get(region.id);x.attempts++;totalAttempts++;x.state='جارٍ القياس';renderRegions();
+ try{
+  const ms=await probeRegion(region,regionalAbort.signal);
+  if(!regionalAbort.signal.aborted){x.samples.push(ms);if(x.samples.length>HISTORY_LIMIT)x.samples.shift();x.state='متصل';x.lastAt=Date.now();totalSuccess++;}
+ }catch(e){if(!regionalAbort.signal.aborted){x.failed++;x.state='تعذر';x.lastAt=Date.now();totalFailed++;}}
+ regionalBusy=false;renderRegions();
+ if(regionalRunning&&!regionalAbort.signal.aborted){updateRegionState(`مباشر · آخر تحديث ${region.name}`);regionalTimer=setTimeout(liveRegionTick,LIVE_INTERVAL);}
 }
-$('startRegions').addEventListener('click',runRegionalTests);
-$('stopRegions').addEventListener('click',()=>{if(regionalAbort)regionalAbort.abort();});
-document.addEventListener('visibilitychange',()=>{if(document.hidden&&regionalRunning&&regionalAbort)regionalAbort.abort();});
+function startLiveRegions(){
+ if(regionalRunning)return;
+ regionalRunning=true;regionalAbort=new AbortController();regionCursor=0;regionalBusy=false;totalAttempts=0;totalSuccess=0;totalFailed=0;
+ REGIONS.forEach(r=>regionResults.set(r.id,{samples:[],attempts:0,failed:0,state:'في الانتظار',lastAt:null}));
+ $('startRegions').disabled=true;$('stopRegions').disabled=false;updateRegionState('بدء القياس المباشر');renderRegions();liveRegionTick();
+}
+function stopLiveRegions(){
+ if(!regionalRunning)return;regionalRunning=false;if(regionalTimer)clearTimeout(regionalTimer);regionalTimer=null;
+ if(regionalAbort)regionalAbort.abort();$('startRegions').disabled=false;$('stopRegions').disabled=true;updateRegionState('متوقف');
+ for(const x of regionResults.values())if(x.state==='جارٍ القياس')x.state='توقف';renderRegions();
+}
+$('startRegions').addEventListener('click',startLiveRegions);
+$('stopRegions').addEventListener('click',stopLiveRegions);
+document.addEventListener('visibilitychange',()=>{if(document.hidden&&regionalRunning)stopLiveRegions();});
 renderRegions();
 start();
 </script></body></html>
