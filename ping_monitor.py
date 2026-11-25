@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
-"""Gaming Server Monitor v14: metadata-only backend; never fabricates player ping."""
+"""Gaming Server Monitor v14.1: metadata-only backend; never fabricates player ping."""
 import json
 import os
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
+from urllib.parse import urlsplit
 
 BASE = Path(__file__).resolve().parent
 CONFIG = json.loads((BASE / "games.json").read_text(encoding="utf-8"))
@@ -29,12 +30,13 @@ def public_config():
             "status": game.get("status"),
             "note": game.get("note"),
         })
-    return {"version": "14", "measurement": "disabled_until_valid_client_probe_exists", "games": games}
+    return {"version": "14.1", "measurement": "disabled_until_valid_client_probe_exists", "games": games}
 
 
 class Handler(BaseHTTPRequestHandler):
-    def log_message(self, *_args):
-        pass
+    def log_message(self, fmt, *args):
+        # Keep request paths visible in Render logs for diagnosis.
+        print("%s - %s" % (self.address_string(), fmt % args), flush=True)
 
     def send_bytes(self, status, body, content_type):
         self.send_response(status)
@@ -49,30 +51,37 @@ class Handler(BaseHTTPRequestHandler):
             pass
 
     def do_GET(self):
-        if self.path in ("/health", "/api/health"):
-            self.send_bytes(200, json.dumps({"ok": True, "service": "ping-tool", "version": "14"}).encode(), "application/json; charset=utf-8")
+        # Render's proxy may forward a query string or absolute-form request target.
+        # Route using the URL path only, not the raw request target.
+        request_path = urlsplit(self.path).path or "/"
+        if request_path in ("/health", "/api/health"):
+            self.send_bytes(200, json.dumps({"ok": True, "service": "ping-tool", "version": "14.1"}).encode(), "application/json; charset=utf-8")
             return
-        if self.path == "/api/config":
+        if request_path == "/api/config":
             self.send_bytes(200, json.dumps(public_config(), ensure_ascii=False).encode(), "application/json; charset=utf-8")
             return
-        if self.path == "/api/stats":
+        if request_path == "/api/stats":
             payload = {
-                "version": "14",
+                "version": "14.1",
                 "measurement": "not_available",
                 "message": "لا توجد نقطة اختبار تدعم قياساً مباشراً من المتصفح لهذه الوجهة.",
                 "items": [],
             }
             self.send_bytes(200, json.dumps(payload, ensure_ascii=False).encode(), "application/json; charset=utf-8")
             return
-        if self.path == "/" or self.path == "/index.html":
+        if request_path in ("/", "/index.html"):
             self.send_bytes(200, (BASE / "index.html").read_bytes(), "text/html; charset=utf-8")
             return
-        if self.path == "/favicon.ico":
+        if request_path == "/favicon.ico":
             self.send_bytes(204, b"", "image/x-icon")
             return
-        self.send_bytes(404, b'{"error":"not_found"}', "application/json; charset=utf-8")
+        self.send_bytes(404, json.dumps({
+            "error": "not_found",
+            "path": request_path,
+            "version": "14.1"
+        }).encode(), "application/json; charset=utf-8")
 
 
 if __name__ == "__main__":
-    print(f"Gaming Server Monitor v14 listening on 0.0.0.0:{PORT}")
+    print(f"Gaming Server Monitor v14.1 listening on 0.0.0.0:{PORT}")
     ThreadingHTTPServer(("0.0.0.0", PORT), Handler).serve_forever()
