@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Gaming Server Monitor v13: metadata-only backend; never fabricates player ping."""
+"""Gaming Server Monitor v14: metadata-only backend; never fabricates player ping."""
 import json
 import os
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
@@ -29,7 +29,7 @@ def public_config():
             "status": game.get("status"),
             "note": game.get("note"),
         })
-    return {"version": "13", "measurement": "disabled_until_valid_client_probe_exists", "games": games}
+    return {"version": "14", "measurement": "disabled_until_valid_client_probe_exists", "games": games}
 
 
 class Handler(BaseHTTPRequestHandler):
@@ -50,14 +50,14 @@ class Handler(BaseHTTPRequestHandler):
 
     def do_GET(self):
         if self.path in ("/health", "/api/health"):
-            self.send_bytes(200, json.dumps({"ok": True, "service": "ping-tool", "version": "13"}).encode(), "application/json; charset=utf-8")
+            self.send_bytes(200, json.dumps({"ok": True, "service": "ping-tool", "version": "14"}).encode(), "application/json; charset=utf-8")
             return
         if self.path == "/api/config":
             self.send_bytes(200, json.dumps(public_config(), ensure_ascii=False).encode(), "application/json; charset=utf-8")
             return
         if self.path == "/api/stats":
             payload = {
-                "version": "13",
+                "version": "14",
                 "measurement": "not_available",
                 "message": "لا توجد نقطة اختبار تدعم قياساً مباشراً من المتصفح لهذه الوجهة.",
                 "items": [],
@@ -74,5 +74,5 @@ class Handler(BaseHTTPRequestHandler):
 
 
 if __name__ == "__main__":
-    print(f"Gaming Server Monitor v13 listening on 0.0.0.0:{PORT}")
+    print(f"Gaming Server Monitor v14 listening on 0.0.0.0:{PORT}")
     ThreadingHTTPServer(("0.0.0.0", PORT), Handler).serve_forever()

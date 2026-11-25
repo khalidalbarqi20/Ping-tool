@@ -1,10 +1,8 @@
-# LIMITS — v13
+# v14 limitations
 
-1. هذه النسخة تصحح التضليل: لا تعرض قياسات Ping حالياً.
-2. أسماء Fortnite في games.json هي عناوين مرجعية لاختبار Epic، لكنها ليست واجهة WebSocket ولا يمكن للمتصفح إرسال ICMP إليها.
-3. نقاط Tencent Cloud في PUBG Mobile ليست خوادم مباريات PUBG؛ تم الإبقاء على وصفها المرجعي فقط، دون قياسها أو عرضها كـ Ping للعبة.
-4. EA FC وCall of Duty: لا توجد عناوين اختبار موثقة في ملفات المشروع.
-5. لقياس من شبكة الجهاز الحالية، يجب نشر نقاط اختبار إقليمية تدعم بروتوكولاً متاحاً للمتصفح (مثلاً WebSocket عبر WSS)، ثم قياس RTT من JavaScript إلى تلك النقاط.
-6. RTT إلى نقطة اختبار مستقلة لا يساوي Ping المباراة، إلا إذا كانت الوجهة نفسها خادم المباراة أو ثبتت المطابقة.
-7. Render Free قد يدخل السكون؛ الخدمة الحالية للواجهة وبيانات التعريف فقط، وليست خدمة قياس مستمرة.
-8. لا يتم تخزين نتائج Ping أو حفظ أرقام غير موجودة.
+- Cloudflare Worker routing is edge-based; this setup does not pin a worker to a requested game region.
+- RTT is browser-to-Cloudflare-edge, not ICMP ping and not game-match ping.
+- Browser JavaScript cannot create raw ICMP/UDP sockets to arbitrary game server IPs.
+- Measurement runs only while the page is active; mobile browsers may throttle timers in background tabs.
+- The probe URL must be configured once per browser/device. localStorage is device/browser-specific.
+- The Worker free plan has quotas and limits; see https://developers.cloudflare.com/workers/platform/limits/.

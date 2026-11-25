@@ -1,20 +1,8 @@
-# SOURCES — بيانات مرجعية وليست قياسات
+# Sources and measurement semantics
 
-## Fortnite
+- Epic Games regional ping endpoint reference: https://www.epicgames.com/help/c-34254770/c-37371353/a22355516
+- Cloudflare WebSockets support: https://developers.cloudflare.com/network/websockets/
+- Cloudflare Workers WebSocket runtime: https://developers.cloudflare.com/workers/runtime-apis/websockets/
+- Cloudflare Workers limits: https://developers.cloudflare.com/workers/platform/limits/
 
-أسماء `ping-<code>.ds.on.epicgames.com` في games.json من صفحة دعم Epic المذكورة في الملف الأصلي:
-https://www.epicgames.com/help/c-34254770/c-37371353/a22355516
-
-وجود الاسم في قائمة Epic لا يعني أن المتصفح يستطيع قياس ICMP إليه، ولا يثبت أن العنوان يقبل WebSocket/HTTP. لذلك لا تعرض v13 أي RTT لهذه العناوين.
-
-## PUBG Mobile
-
-نقاط `cos.<region>.myqcloud.com` المذكورة في الملف الأصلي هي نقاط Tencent Cloud COS، وليست عناوين مؤكدة لخوادم مباريات PUBG Mobile. تبقى كمرجع فقط ولا يتم قياسها أو وصفها بأنها Ping اللعبة.
-
-## EA SPORTS FC وCall of Duty
-
-لا توجد عناوين اختبار موثقة لخوادم المباريات في ملفات المصدر الحالية. روابط الحالة الرسمية لا توفر بحد ذاتها Ping من جهاز اللاعب.
-
-## قاعدة عرض البيانات
-
-لا يظهر رقم Ping إلا بعد قياس فعلي من المتصفح إلى نقطة اختبار تدعم بروتوكول المتصفح، مع تسمية الوجهة بدقة. RTT إلى نقطة اختبار لا يساوي Ping المباراة تلقائياً.
+The new RTT value is measured by the browser to the configured Cloudflare Worker WebSocket endpoint. It is not a game-server measurement. Region-specific game ping remains unavailable until a genuine browser-reachable probe is deployed in that region or the game publisher exposes a suitable measurement endpoint.

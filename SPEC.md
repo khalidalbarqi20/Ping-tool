@@ -1,10 +1,10 @@
-# SPEC — v13 (تصحيح الدقة)
+# v14 measurement specification
 
-- واجهة عربية متجاوبة للجوال والتابلت والكمبيوتر.
-- يحتفظ المشروع بقائمة الألعاب ومناطق Fortnite المرجعية وبمعلومات PUBG Mobile المرجعية كما في v12.
-- لا ينفذ الخادم أي ICMP أو TCP probes، ولا يعرض نتائج قديمة من Render على أنها Ping المستخدم.
-- واجهة `/api/config` تقدم بيانات وصفية فقط. `/api/stats` يصرح بأن القياس غير متاح.
-- الصفحة لا تعرض رقماً حتى توجد نقطة اختبار تدعم اتصالاً من المتصفح في المنطقة المطلوبة.
-- اتصال المتصفح بنقطة اختبار WebSocket مستقبلية سيستخدم اتصال الجهاز الحالي تلقائياً (Wi-Fi/بيانات جوال/Ethernet)، لكن RTT إلى نقطة الاختبار لا يساوي Ping المباراة تلقائياً.
-- لا يمكن للمتصفح تنفيذ ICMP أو UDP خام إلى عناوين عشوائية.
-- EA FC وCall of Duty لا تملك في بيانات المشروع وجهات قياس موثقة.
+1. The browser opens a secure WebSocket (`wss://`) to a user-configured echo probe.
+2. The browser timestamps each outgoing message with `performance.now()`.
+3. The probe echoes the same message immediately.
+4. The browser calculates round-trip time (RTT) locally.
+5. Average and jitter are calculated from the last 60 successful samples.
+6. The measurement is explicitly labeled nearest Cloudflare Edge RTT.
+7. No result is presented as game-match ping.
+8. Game region cards remain unavailable until region-specific probes are independently verified.

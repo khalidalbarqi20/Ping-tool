@@ -1,0 +1,4 @@
+name = "gaming-ping-edge-probe"
+main = "worker.js"
+compatibility_date = "2026-11-25"
+workers_dev = true
