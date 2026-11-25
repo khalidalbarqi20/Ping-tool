@@ -1,4 +1,4 @@
-# Gaming Server Monitor v15.0
+# Gaming Server Monitor v16.0
 
 - يحافظ على قياس Cloudflare WebSocket العام الموجود سابقًا.
 - يضيف اختبار HTTP إقليميًا مباشرًا من المتصفح إلى 16 نقطة AWS DynamoDB في الشرق الأوسط وآسيا/المحيط الهادئ.

@@ -1,4 +1,4 @@
-# v15.0 measurement specification
+# v16.0 measurement specification
 
 1. Existing Cloudflare WebSocket RTT remains separate and unchanged.
 2. Regional HTTP test is initiated manually by the user.

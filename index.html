@@ -1,116 +1,22 @@
 <!doctype html>
-<html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#080b10"><title>Gaming Server Monitor v15.0</title>
+<html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#080b10"><title>Gulf Ping Monitor v16.1</title>
 <style>
-:root{color-scheme:dark;--bg:#080b10;--card:#111923;--line:#273444;--muted:#9aa9ba;--cyan:#42c6d8;--warn:#e8bd68;--green:#42d392;--red:#ff737d}*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 50% -30%,#153043 0,transparent 55%),var(--bg);color:#f3f7fb;font-family:system-ui,-apple-system,"Segoe UI",sans-serif}header{height:66px;padding:0 max(16px,calc((100% - 1050px)/2));display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);position:sticky;top:0;background:#080b10ed;z-index:4}.brand{font-weight:750}.brand small{display:block;color:var(--muted);font-size:10px;font-weight:400}.live{font-size:11px;color:var(--green);border:1px solid #27533f;border-radius:20px;padding:7px 11px}main{max-width:1050px;margin:auto;padding:24px 15px 45px}.hero h1{font-size:clamp(24px,4vw,34px);margin:0 0 7px}.hero p{color:var(--muted);font-size:13px;margin:0 0 18px}.alert{padding:13px 15px;border:1px solid #66501d;background:#241d0e;color:#f0dca7;border-radius:12px;font-size:12px;line-height:1.9;margin-bottom:18px}.probe{border:1px solid #286174;background:linear-gradient(145deg,#102431,#0d1721);border-radius:15px;padding:16px;margin-bottom:22px}.probe-head{display:flex;justify-content:space-between;align-items:center;gap:10px}.probe h2{font-size:17px;margin:0}.scope{font-size:10px;color:#8ee1eb;border:1px solid #286174;border-radius:20px;padding:5px 8px}.probe p{font-size:12px;color:var(--muted);line-height:1.8}.big{font-size:34px;font-weight:800;color:var(--cyan);font-variant-numeric:tabular-nums}.metrics{display:flex;gap:18px;flex-wrap:wrap;font-size:11px;color:var(--muted)}.metrics b{color:#fff}.setup{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.setup input{flex:1;min-width:220px;background:#080f17;border:1px solid #35485c;border-radius:8px;padding:10px;color:white;font:inherit;font-size:12px;direction:ltr}.btn{background:#183344;border:1px solid #346075;color:#fff;border-radius:8px;padding:10px 14px;font:inherit;font-size:12px;cursor:pointer}.toolbar{display:flex;justify-content:space-between;gap:10px;margin-bottom:13px}.toolbar h2{font-size:18px;margin:0}.toolbar span{font-size:11px;color:var(--muted)}.games{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}.game{border:1px solid var(--line);background:linear-gradient(145deg,#121b26,#0d131c);border-radius:16px;padding:15px;min-width:0}.game-head{display:flex;justify-content:space-between;gap:8px;align-items:center}.game h3{margin:0;font-size:16px}.tag{font-size:10px;color:var(--warn);background:#302713;padding:5px 8px;border-radius:20px}label{font-size:11px;color:var(--muted);display:block;margin:12px 0 7px}select{width:100%;padding:11px;border:1px solid #35485c;border-radius:9px;background:#0a111a;color:#fff;font:inherit;font-size:13px}.result{margin-top:12px;padding:13px 11px;border-radius:11px;background:#0b121a;border:1px dashed #39495b;text-align:center}.value{font-size:23px;font-weight:750;color:#aab7c6}.result small{display:block;color:var(--muted);font-size:11px;margin-top:4px}.reason{font-size:11px;color:#c0ccd8;line-height:1.8;margin:11px 1px 0}.links{display:flex;gap:12px;flex-wrap:wrap;margin-top:10px}.links a{font-size:11px;color:var(--cyan);text-decoration:none}.region-panel{border:1px solid #273d50;background:linear-gradient(145deg,#111d29,#0b121a);border-radius:16px;padding:15px;margin:20px 0}.region-top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}.region-top h2{font-size:18px;margin:0}.region-actions{display:flex;gap:8px;flex-wrap:wrap}.region-note{color:var(--muted);font-size:11px;line-height:1.8}.region-table-wrap{overflow-x:auto;margin-top:12px}.region-table{width:100%;border-collapse:collapse;min-width:480px;font-size:12px}.region-table th,.region-table td{padding:10px 8px;border-bottom:1px solid #263442;text-align:right}.region-table th{color:#91a6ba;font-size:10px;font-weight:600}.region-table td:nth-child(n+3){direction:ltr;text-align:center;font-variant-numeric:tabular-nums}.region-name{font-weight:650}.region-code{display:block;color:#8194a8;font-size:10px;direction:ltr;text-align:right}.region-value{color:#d9e8f3;font-weight:700}.region-state{font-size:10px;color:var(--muted)}.region-state.ok{color:var(--green)}.region-state.fail{color:var(--red)}.region-summary{display:flex;gap:14px;flex-wrap:wrap;margin-top:12px;color:var(--muted);font-size:11px}.region-summary b{color:#fff}.btn.secondary{background:#202a35;border-color:#3a4a5c}.btn:disabled{opacity:.45;cursor:not-allowed}.status{display:flex;align-items:center;gap:7px;color:var(--muted);font-size:11px;margin-top:12px}.dot{width:7px;height:7px;border-radius:50%;background:var(--warn)}footer{border-top:1px solid var(--line);margin-top:26px;padding-top:15px;color:var(--muted);font-size:11px;line-height:1.9}@media(max-width:650px){main{padding:20px 12px 35px}.games{grid-template-columns:1fr}.toolbar{align-items:flex-start;flex-direction:column}}
+:root{color-scheme:dark;--bg:#080b10;--card:#111923;--line:#273444;--muted:#9aa9ba;--cyan:#42c6d8}*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 50% -30%,#153043 0,transparent 55%),var(--bg);color:#f3f7fb;font-family:system-ui,-apple-system,"Segoe UI",sans-serif}header{padding:18px 16px;text-align:center;border-bottom:1px solid var(--line);font-weight:750;font-size:18px}main{max-width:680px;margin:36px auto;padding:0 14px}.actions{display:flex;justify-content:center;gap:9px;margin-bottom:18px}button{background:#183344;border:1px solid #346075;color:#fff;border-radius:9px;padding:10px 18px;font:inherit;font-size:13px;cursor:pointer}button:disabled{opacity:.45;cursor:not-allowed}.servers{display:grid;grid-template-columns:minmax(0,420px);justify-content:center;gap:13px}.server{border:1px solid #273d50;background:linear-gradient(145deg,#111d29,#0b121a);border-radius:16px;padding:22px 12px;text-align:center}.name{font-size:17px;font-weight:700;margin-bottom:22px}.metric-label{font-size:12px;color:var(--muted);margin-bottom:7px}.ping{font-size:clamp(30px,8vw,44px);font-weight:800;color:var(--cyan);font-variant-numeric:tabular-nums;direction:ltr}.avg{font-size:clamp(22px,6vw,30px);font-weight:700;color:#f3f7fb;font-variant-numeric:tabular-nums;direction:ltr;margin-bottom:19px}.unit{font-size:12px;color:var(--muted);font-weight:500}.divider{height:1px;background:var(--line);margin:18px 0}@media(max-width:420px){main{margin:24px auto}.server{padding:18px 8px}.name{font-size:15px}}
 </style></head><body>
-<header><div class="brand">Gaming Server Monitor <small>لوحة مراقبة المناطق الإقليمية — v15.0</small></div><span class="live" id="serviceState">الخدمة متصلة</span></header>
-<main><section class="hero"><h1>مراقبة اتصال الألعاب</h1><p>القياس يبدأ من المتصفح عبر اتصال الإنترنت الحالي تلقائياً بعد إعداد نقطة الاختبار.</p></section>
-<div class="alert"><b>تمييز ضروري:</b> الرقم في بطاقة الاختبار يقيس RTT بين جهازك وأقرب نقطة Cloudflare Edge، وليس Ping خادم مباراة. قياس Cloudflare منفصل عن بنق المباراة. لا نستخدمه لتصنيف PUBG أو Fortnite.</div>
-<section class="probe"><div class="probe-head"><h2>قياس اتصال جهازك الحالي</h2><span class="scope">أقرب Cloudflare Edge — عالمي</span></div><p>هذه نقطة اختبار عامة وليست اختيار منطقة لعبة. القياس يستخدم اتصال الجهاز النشط حالياً سواء Wi-Fi أو بيانات جوال أو Ethernet.</p><div class="big" id="ping">— <small style="font-size:13px">ms</small></div><div class="metrics"><span>المتوسط: <b id="avg">—</b> ms</span><span>Jitter: <b id="jitter">—</b> ms</span><span>العينات: <b id="samples">0</b></span><span>الحالة: <b id="probeStatus">غير مهيأ</b></span></div><div class="setup"><input id="probeUrl" placeholder="wss://اسم-الخدمة.workers.dev/ws" autocomplete="url"><button class="btn" id="save">حفظ وتشغيل</button></div><p id="hint">انشر نقطة الاختبار المرفقة في مجلد probe-worker على Cloudflare Workers، ثم ضع رابطها هنا مرة واحدة.</p></section>
-<section class="region-panel" aria-labelledby="regionTitle">
- <div class="region-top"><h2 id="regionTitle">اختبار مناطق الشرق الأوسط وآسيا</h2><div class="region-actions"><button class="btn" id="startRegions">ابدأ القياس المباشر</button><button class="btn secondary" id="stopRegions" disabled>إيقاف</button></div></div>
- <p class="region-note">قياس مباشر مستمر: تُرسل عينة جديدة كل ثانية بالتناوب بين المناطق الـ16، لذلك تتحدث قراءة كل منطقة تقريبًا كل 16 ثانية. نستخدم طلبًا واحدًا في كل مرة لتجنب الضغط على الشبكة. مهلة الطلب 2.5 ثانية. هذه استجابة HTTP وليست بنق خوادم الألعاب أو فقدان UDP. المناطق الإسرائيلية مستبعدة تمامًا.</p>
- <div class="region-summary"><span>المناطق: <b>16</b></span><span>المحاولات: <b id="regionAttempts">0</b></span><span>الناجحة: <b id="regionSuccess">0</b></span><span>الفاشلة: <b id="regionFailed">0</b></span><span>الحالة: <b id="regionRunState">جاهز</b></span></div>
- <div class="region-table-wrap"><table class="region-table"><thead><tr><th>المنطقة</th><th>آخر استجابة</th><th>الوسيط</th><th>العينات</th><th>الحالة</th></tr></thead><tbody id="regionRows"></tbody></table></div>
-</section>
-<div class="toolbar"><h2>الألعاب — الشرق الأوسط فقط</h2><span id="summary">معاييرك المرجعية</span></div><section id="games" class="games" aria-live="polite"></section>
-<footer><b>حدود الدقة:</b><br>قياس Cloudflare Edge يوضح جودة المسار إلى نقطة Cloudflare فقط. لا نستنتج منه Ping PUBG أو Fortnite. تصنيفات PUBG (20–35 ممتاز، 36–99 متوسط، 100+ سيئ) وFortnite (60–70 ممتاز، 71–119 متوسط، 120+ سيئ) مبنية على مرجع اللعب الفعلي الذي زودنا به المستخدم، ولا تُطبّق إلا بعد توفر قياس إقليمي صالح خاص باللعبة. لا يتم عرض رقم بديل أو تخميني.</footer></main>
+<header>قياس بنق سيرفرات الخليج</header>
+<main><div class="actions"><button id="start">بدء القياس المباشر</button><button id="stop" disabled>إيقاف</button></div>
+<section class="servers" aria-label="Gulf servers">
+ <article class="server"><div class="name">🇦🇪 الإمارات</div><div class="metric-label">البنق الحالي</div><div class="ping" id="ping-ae">— <span class="unit">ms</span></div><div class="divider"></div><div class="metric-label">متوسط البنق</div><div class="avg" id="avg-ae">— <span class="unit">ms</span></div></article>
+</section></main>
 <script>
-const APP_VERSION='15.1';
-const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));let socket=null,timer=null,values=[],pending=new Map(),seq=0;
-const $=id=>document.getElementById(id);function stats(){if(!values.length)return;$('avg').textContent=Math.round(values.reduce((a,b)=>a+b,0)/values.length);const d=values.slice(1).map((v,i)=>Math.abs(v-values[i]));$('jitter').textContent=d.length?Math.round(d.reduce((a,b)=>a+b,0)/d.length):'—';$('samples').textContent=values.length;}
-function stop(){if(timer)clearInterval(timer);timer=null;if(socket){try{socket.close()}catch{}}socket=null;pending.clear();}
-function connect(url){stop();values=[];$('ping').innerHTML='— <small style="font-size:13px">ms</small>';$('avg').textContent='—';$('jitter').textContent='—';$('samples').textContent='0';if(!url){$('probeStatus').textContent='غير مهيأ';return;}if(!/^wss:\/\//i.test(url)){ $('probeStatus').textContent='الرابط يجب أن يبدأ بـ wss://';return;}$('probeStatus').textContent='جارٍ الاتصال';try{socket=new WebSocket(url);socket.onopen=()=>{$('probeStatus').textContent='متصل';let last=0;timer=setInterval(()=>{if(!socket||socket.readyState!==1)return;const id=++seq;const now=performance.now();pending.set(id,now);socket.send(JSON.stringify({id,clientTime:Date.now()}));for(const [k,t] of pending)if(now-t>5000)pending.delete(k);},1000);};socket.onmessage=e=>{let m;try{m=JSON.parse(e.data)}catch{return}if(!pending.has(m.id))return;const ms=performance.now()-pending.get(m.id);pending.delete(m.id);values.push(ms);if(values.length>60)values.shift();$('ping').innerHTML=Math.round(ms)+' <small style="font-size:13px">ms</small>';$('probeStatus').textContent='متصل';stats();};socket.onerror=()=>{$('probeStatus').textContent='فشل الاتصال';};socket.onclose=()=>{$('probeStatus').textContent='منقطع';if(timer)clearInterval(timer);timer=null;};}catch{$('probeStatus').textContent='تعذر إنشاء الاتصال';}}
-$('save').onclick=()=>{const url=$('probeUrl').value.trim();localStorage.setItem('gpm_probe_url',url);connect(url);};const saved=localStorage.getItem('gpm_probe_url')||'';$('probeUrl').value=saved;if(saved)connect(saved);
-// User-provided in-game reference thresholds. These are applied ONLY to a valid
-// per-game regional RTT measurement, never to the generic Cloudflare Edge RTT.
-const GAME_RULES={
-  pubg:{excellent:[20,35],badFrom:100,mid:[36,99]},
-  fortnite:{excellent:[60,70],badFrom:120,mid:[71,119]}
-};
-function classifyGamePing(gameId,ms){
-  const r=GAME_RULES[gameId]; if(!r||!Number.isFinite(ms)) return {label:'غير متاح',kind:'neutral'};
-  if(ms>=r.badFrom) return {label:'سيئ',kind:'bad'};
-  if(ms>=r.excellent[0]&&ms<=r.excellent[1]) return {label:'ممتاز',kind:'good'};
-  return {label:'متوسط',kind:'mid'};
-}
-async function start(){
- const el=$('games');
- const cards=[
-  {id:'pubg',name:'PUBG Mobile',region:'الشرق الأوسط',range:'20–35 ms ممتاز',mid:'36–99 ms متوسط',bad:'100 ms فأكثر سيئ',note:'لا نملك حالياً نقطة اختبار إقليمية موثقة لخادم مباراة PUBG Mobile. لا نستخدم قياس Cloudflare بديلاً عنه.'},
-  {id:'fortnite',name:'Fortnite',region:'الشرق الأوسط — البحرين',range:'60–70 ms ممتاز',mid:'71–119 ms متوسط',bad:'120 ms فأكثر سيئ',note:'عنوان Epic في البحرين مرجع اختبار، لكن قياس ICMP إليه غير متاح مباشرة من صفحة الويب. لا نعرض RTT غير متحقق.'}
- ];
- el.innerHTML=cards.map(g=>`<article class="game">
-  <div class="game-head"><h3>${g.name}</h3><span class="tag">${g.region}</span></div>
-  <div class="result"><div class="value">غير متاح</div><small>بانتظار نقطة قياس إقليمية صالحة لهذه اللعبة</small></div>
-  <div class="reason"><b>معايير التصنيف التي حددتها:</b><br>${g.range}<br>${g.mid}<br>${g.bad}<br><br>${g.note}</div>
-  <div class="status"><i class="dot"></i> لا يتم تصنيف اللعبة من قياس Cloudflare العام</div>
-  ${g.id==='fortnite'?'<div class="links"><a href="https://www.epicgames.com/help/c-34254770/c-37371353/a22355516" target="_blank" rel="noopener">مرجع Epic لاختبار Ping</a></div>':''}
- </article>`).join('');
- $('summary').textContent='لعبتان · الشرق الأوسط فقط · التصنيف ينتظر قياس اللعبة';
-}
-const REGIONS = [
- {id:'me-south-1',name:'البحرين',flag:'🇧🇭',group:'الشرق الأوسط'},
- {id:'me-central-1',name:'الإمارات',flag:'🇦🇪',group:'الشرق الأوسط'},
- {id:'ap-south-1',name:'مومباي – الهند',flag:'🇮🇳',group:'آسيا'},
- {id:'ap-south-2',name:'حيدر آباد – الهند',flag:'🇮🇳',group:'آسيا'},
- {id:'ap-southeast-1',name:'سنغافورة',flag:'🇸🇬',group:'آسيا'},
- {id:'ap-southeast-2',name:'سيدني – أستراليا',flag:'🇦🇺',group:'آسيا والمحيط الهادئ'},
- {id:'ap-southeast-3',name:'جاكرتا – إندونيسيا',flag:'🇮🇩',group:'آسيا'},
- {id:'ap-southeast-4',name:'ملبورن – أستراليا',flag:'🇦🇺',group:'آسيا والمحيط الهادئ'},
- {id:'ap-southeast-5',name:'ماليزيا',flag:'🇲🇾',group:'آسيا'},
- {id:'ap-southeast-6',name:'نيوزيلندا',flag:'🇳🇿',group:'آسيا والمحيط الهادئ'},
- {id:'ap-southeast-7',name:'تايلاند',flag:'🇹🇭',group:'آسيا'},
- {id:'ap-northeast-1',name:'طوكيو – اليابان',flag:'🇯🇵',group:'آسيا'},
- {id:'ap-northeast-2',name:'سيول – كوريا الجنوبية',flag:'🇰🇷',group:'آسيا'},
- {id:'ap-northeast-3',name:'أوساكا – اليابان',flag:'🇯🇵',group:'آسيا'},
- {id:'ap-east-1',name:'هونغ كونغ',flag:'🇭🇰',group:'آسيا'},
- {id:'ap-east-2',name:'تايبيه – تايوان',flag:'🇹🇼',group:'آسيا'}
-];
-const REGIONAL_TIMEOUT=2500, LIVE_INTERVAL=1000, HISTORY_LIMIT=60;
-let regionalAbort=null,regionalRunning=false,regionalTimer=null,regionCursor=0,regionalBusy=false;
-let totalAttempts=0,totalSuccess=0,totalFailed=0;
-const regionResults=new Map(REGIONS.map(r=>[r.id,{samples:[],attempts:0,failed:0,state:'بانتظار القياس',lastAt:null}]));
-function median(a){if(!a.length)return null;const x=[...a].sort((m,n)=>m-n),k=Math.floor(x.length/2);return x.length%2?x[k]:(x[k-1]+x[k])/2;}
-function renderRegions(){
- $('regionRows').innerHTML=REGIONS.map(r=>{const x=regionResults.get(r.id),last=x.samples.length?x.samples[x.samples.length-1]:null,med=median(x.samples);const state=x.state==='متصل'?'ok':x.state==='تعذر'?'fail':'';const age=x.lastAt?`${Math.max(0,Math.floor((Date.now()-x.lastAt)/1000))} ث`:'—';return `<tr><td><span class="region-name">${r.flag} ${r.name}</span><span class="region-code">${r.id}</span></td><td class="region-value">${last===null?'—':Math.round(last)+' ms'}</td><td class="region-value">${med===null?'—':Math.round(med)+' ms'}</td><td>${x.attempts}</td><td><span class="region-state ${state}">${x.state} · ${age}</span></td></tr>`}).join('');
- $('regionAttempts').textContent=totalAttempts;$('regionSuccess').textContent=totalSuccess;$('regionFailed').textContent=totalFailed;
-}
-function updateRegionState(t){$('regionRunState').textContent=t;}
-async function probeRegion(region,signal){
- const url=`https://dynamodb.${region.id}.amazonaws.com/?gpm=${Date.now()}-${Math.random().toString(36).slice(2)}`;
- const controller=new AbortController(),timerId=setTimeout(()=>controller.abort(),REGIONAL_TIMEOUT);
- const abort=()=>controller.abort();signal.addEventListener('abort',abort,{once:true});
- const started=performance.now();
- try{await fetch(url,{method:'GET',mode:'no-cors',cache:'no-store',credentials:'omit',redirect:'follow',signal:controller.signal});return performance.now()-started;}
- finally{clearTimeout(timerId);signal.removeEventListener('abort',abort);}
-}
-async function liveRegionTick(){
- if(!regionalRunning||regionalBusy||!regionalAbort||regionalAbort.signal.aborted)return;
- regionalBusy=true;
- const region=REGIONS[regionCursor];regionCursor=(regionCursor+1)%REGIONS.length;
- const x=regionResults.get(region.id);x.attempts++;totalAttempts++;x.state='جارٍ القياس';renderRegions();
- try{
-  const ms=await probeRegion(region,regionalAbort.signal);
-  if(!regionalAbort.signal.aborted){x.samples.push(ms);if(x.samples.length>HISTORY_LIMIT)x.samples.shift();x.state='متصل';x.lastAt=Date.now();totalSuccess++;}
- }catch(e){if(!regionalAbort.signal.aborted){x.failed++;x.state='تعذر';x.lastAt=Date.now();totalFailed++;}}
- regionalBusy=false;renderRegions();
- if(regionalRunning&&!regionalAbort.signal.aborted){updateRegionState(`مباشر · آخر تحديث ${region.name}`);regionalTimer=setTimeout(liveRegionTick,LIVE_INTERVAL);}
-}
-function startLiveRegions(){
- if(regionalRunning)return;
- regionalRunning=true;regionalAbort=new AbortController();regionCursor=0;regionalBusy=false;totalAttempts=0;totalSuccess=0;totalFailed=0;
- REGIONS.forEach(r=>regionResults.set(r.id,{samples:[],attempts:0,failed:0,state:'في الانتظار',lastAt:null}));
- $('startRegions').disabled=true;$('stopRegions').disabled=false;updateRegionState('بدء القياس المباشر');renderRegions();liveRegionTick();
-}
-function stopLiveRegions(){
- if(!regionalRunning)return;regionalRunning=false;if(regionalTimer)clearTimeout(regionalTimer);regionalTimer=null;
- if(regionalAbort)regionalAbort.abort();$('startRegions').disabled=false;$('stopRegions').disabled=true;updateRegionState('متوقف');
- for(const x of regionResults.values())if(x.state==='جارٍ القياس')x.state='توقف';renderRegions();
-}
-$('startRegions').addEventListener('click',startLiveRegions);
-$('stopRegions').addEventListener('click',stopLiveRegions);
-document.addEventListener('visibilitychange',()=>{if(document.hidden&&regionalRunning)stopLiveRegions();});
-renderRegions();
-start();
+const REGIONS=[{id:'me-central-1',key:'ae'}];
+const TIMEOUT=2500,HISTORY=60;let running=false,busy=false,timer=null,controller=null;
+const data=new Map(REGIONS.map(r=>[r.key,{current:null,samples:[]} ]));
+const el=id=>document.getElementById(id);
+function paint(){for(const r of REGIONS){const d=data.get(r.key),avg=d.samples.length?d.samples.reduce((a,b)=>a+b,0)/d.samples.length:null;el('ping-'+r.key).innerHTML=(d.current===null?'—':Math.round(d.current))+' <span class="unit">ms</span>';el('avg-'+r.key).innerHTML=(avg===null?'—':Math.round(avg))+' <span class="unit">ms</span>';}}
+async function measure(region,signal){const url=`https://dynamodb.${region.id}.amazonaws.com/?ping=${Date.now()}-${Math.random().toString(36).slice(2)}`;const c=new AbortController(),t=setTimeout(()=>c.abort(),TIMEOUT);const abort=()=>c.abort();signal.addEventListener('abort',abort,{once:true});const start=performance.now();try{await fetch(url,{method:'GET',mode:'no-cors',cache:'no-store',credentials:'omit',redirect:'follow',signal:c.signal});return performance.now()-start;}finally{clearTimeout(t);signal.removeEventListener('abort',abort);}}
+async function tick(){if(!running||busy)return;busy=true;controller=new AbortController();await Promise.all(REGIONS.map(async r=>{const d=data.get(r.key);try{const ms=await measure(r,controller.signal);if(running){d.current=ms;d.samples.push(ms);if(d.samples.length>HISTORY)d.samples.shift();}}catch{if(running)d.current=null;}}));paint();busy=false;controller=null;if(running)timer=setTimeout(tick,1000);}
+function start(){if(running)return;running=true;for(const d of data.values()){d.current=null;d.samples=[];}paint();el('start').disabled=true;el('stop').disabled=false;tick();}
+function stop(){running=false;if(timer)clearTimeout(timer);timer=null;if(controller)controller.abort();el('start').disabled=false;el('stop').disabled=true;}
+el('start').addEventListener('click',start);el('stop').addEventListener('click',stop);document.addEventListener('visibilitychange',()=>{if(document.hidden&&running)stop();});paint();
 </script></body></html>
