@@ -1,23 +1,20 @@
-# SOURCES
-Fortnite: كل العناوين `ping-<code>.ds.on.epicgames.com` (16 منطقة) مذكورة في صفحة Epic الرسمية
-(نسختا EN وES): https://www.epicgames.com/help/c-34254770/c-37371353/a22355516
-آخر تحقق من الصفحة: 2026-11-25. الرموز: va oh ia tx mx ncal or de gb fr bah mum il tok syd sao.
-لم تُجرَّب بعد من جوالك: زر الفحص يكشف أيها يرد، والذي لا يرد يظهر Offline.
-PUBG / EA FC 27 / Call of Duty: لا عناوين قياس موثقة، لذلك لا بنق لها. حالة السيرفر فقط:
-EA https://help.ea.com/en/server-status/ ، Activision https://support.activision.com/onlineservices
+# SOURCES — بيانات مرجعية وليست قياسات
 
-## PUBG Mobile (تقريبي: مراكز Tencent Cloud وليس سيرفر اللعبة)
-- اللعبة تعمل على Tencent Cloud: https://www.netify.ai/resources/applications/pubg-mobile ، https://myping.is/pubg-mobile-ping (يذكر أن هونغ كونغ مركز لآسيا)
-- مناطق اللعبة: NA وSA وEU وAsia وKRJP وMiddle East، والاختيار من الإعدادات.
-- الشرق الأوسط: ExitLag يقيس سيرفر PUBG Mobile في السعودية (14ms متوسط الربع الثاني 2026): https://www.exitlag.com/blog/pubg-middle-east-servers-high-ping . مصادر أخرى تقول دبي/الإمارات (متضاربة، أحدها قديم).
-- Tencent Cloud عندها منطقة الرياض me-saudi-arabia: https://www.tencentcloud.com/document/product/213/6091
-- نقاط القياس: cos.<region>.myqcloud.com على TCP:443، وهي نفس نقاط regionping.cloud: https://regionping.cloud/tencent-ping-test
-  me-saudi-arabia (الرياض) / eu-frankfurt / ap-singapore / ap-hongkong.
-- لم أجرب أن هذه الأسماء ترد من جوالك. لا يوجد عنوان رسمي من Krafton/Tencent لسيرفرات المباراة.
-- حُذفت مراكز AWS (كانت لنسخة PC). AWS البحرين متوقفة منذ مارس 2026.
+## Fortnite
 
-أسماء المربعات تتبع أسماء السيرفرات داخل PUBG Mobile (Middle East / Europe / Asia). مدينة القياس (الرياض وغيرها) استنتاجنا وليست من اللعبة.
+أسماء `ping-<code>.ds.on.epicgames.com` في games.json من صفحة دعم Epic المذكورة في الملف الأصلي:
+https://www.epicgames.com/help/c-34254770/c-37371353/a22355516
 
+وجود الاسم في قائمة Epic لا يعني أن المتصفح يستطيع قياس ICMP إليه، ولا يثبت أن العنوان يقبل WebSocket/HTTP. لذلك لا تعرض v13 أي RTT لهذه العناوين.
 
-## توضيح مصدر القياس في v12
-العناوين أعلاه تُختبر من عملية Python على خادم الاستضافة. لا تقيس المسار من جهاز المستخدم. يجب عدم وصف النتيجة بأنها بنق المستخدم أو بنق المباراة.
+## PUBG Mobile
+
+نقاط `cos.<region>.myqcloud.com` المذكورة في الملف الأصلي هي نقاط Tencent Cloud COS، وليست عناوين مؤكدة لخوادم مباريات PUBG Mobile. تبقى كمرجع فقط ولا يتم قياسها أو وصفها بأنها Ping اللعبة.
+
+## EA SPORTS FC وCall of Duty
+
+لا توجد عناوين اختبار موثقة لخوادم المباريات في ملفات المصدر الحالية. روابط الحالة الرسمية لا توفر بحد ذاتها Ping من جهاز اللاعب.
+
+## قاعدة عرض البيانات
+
+لا يظهر رقم Ping إلا بعد قياس فعلي من المتصفح إلى نقطة اختبار تدعم بروتوكول المتصفح، مع تسمية الوجهة بدقة. RTT إلى نقطة اختبار لا يساوي Ping المباراة تلقائياً.

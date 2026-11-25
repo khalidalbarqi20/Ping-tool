@@ -1,0 +1,7 @@
+__pycache__/
+*.py[cod]
+.snapshots*
+snapshots.json
+custom.json
+.env
+.DS_Store
